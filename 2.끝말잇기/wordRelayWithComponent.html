@@ -1,0 +1,55 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>끝말잇기</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <word-relay></word-relay>
+      <word-relay></word-relay>
+      <word-relay></word-relay>
+    </div>
+    <script>
+      Vue.component("word-relay", {
+        // component의 template에서는 최상위 태그는 오직 1개여야 한다. (감싸줘야 함)
+        template: `
+        <div>
+          <div>{{word}}</div>
+            <form v-on:submit="checkAnswer">
+              <input type="text" v-model="value" ref="answer" />
+              <button type="submit">입력!</button>
+            </form>
+          <div>{{result}}</div>
+        </div>
+        `,
+        // component의 data는 함수로 만들어, return 해야한다.
+        data() {
+          return { word: "바나나", value: "", result: "" };
+        },
+        methods: {
+          checkAnswer(e) {
+            e.preventDefault();
+            if (this.word[this.word.length - 1] == this.value[0]) {
+              this.result = "딩동댕";
+              this.word = this.value;
+              this.value = "";
+              this.$refs.answer.focus();
+            } else {
+              this.result = "땡";
+              this.value = "";
+              this.$refs.answer.focus();
+            }
+          },
+        },
+      });
+    </script>
+    <script>
+      const app = new Vue({
+        el: "#root",
+      });
+    </script>
+  </body>
+</html>
