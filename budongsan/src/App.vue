@@ -5,7 +5,7 @@
     <div class="white-bg">
       <h4 style="display: inline">상세 페이지</h4>
       <button v-on:click="openModal(false)">닫기</button>
-      <p>{{ products[0].content }}</p>
+      <p>{{ currentContents }}</p>
     </div>
   </div>
 
@@ -15,7 +15,7 @@
 
   <div v-for="(product, idx) in products" :key="idx">
     <img :src="product.image" class="room-img" />
-    <h4 v-on:click="openModal(true)">{{ product.title }}</h4>
+    <h4 v-on:click="openModal(true, idx)">{{ product.title }}</h4>
     <p>{{ product.price }} 만원</p>
     <button v-on:click="increase(idx)">허위매물신고</button>
     <span>신고 수: {{ product.reportCnt }}</span>
@@ -32,14 +32,16 @@ export default {
       menus: ["Home", "Shop", "About"],
       products: postList,
       isOpenModal: false,
+      currentContents: "",
     };
   },
   methods: {
     increase(idx) {
       return this.products[idx].reportCnt++;
     },
-    openModal(isOpenModal) {
-      return (this.isOpenModal = isOpenModal);
+    openModal(isOpenModal, idx) {
+      this.isOpenModal = isOpenModal;
+      this.currentContents = this.products[idx].content;
     },
   },
   components: {},
